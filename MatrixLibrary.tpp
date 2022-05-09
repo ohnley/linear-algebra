@@ -8,7 +8,6 @@ Matrix<T>::Matrix(const std::vector<std::vector<T>> m)
     , num_rows(m.size())
     , num_cols(m[0].size())
 {
-
 }
 
 template <typename T>
@@ -20,12 +19,6 @@ template <typename T>
 std::vector<T> Matrix<T>::operator[](uint32_t index) const {
     return m_data[index];
 }
-
-//template <typename T>
-//Matrix<T>& operator* (const Matrix<T>& rhs) const {
-//
-//}
-
 
 
 template <typename T>
