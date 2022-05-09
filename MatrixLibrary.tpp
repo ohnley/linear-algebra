@@ -1,4 +1,5 @@
-
+#ifndef MATRIX_LIBRARY_DEF
+#define MATRIX_LIBRARY_DEF
 #include "MatrixLibrary.h"
 
 template <typename T>
@@ -15,22 +16,29 @@ std::vector<T>& Matrix<T>::operator[](uint32_t index) {
     return m_data[index];
 }
 
-
 template <typename T>
-Matrix<T>& operator* (const Matrix<T>& rhs) const {
-
+std::vector<T> Matrix<T>::operator[](uint32_t index) const {
+    return m_data[index];
 }
 
-template <typename T>
-void operator+=(Matrix<T>& lm,  Matrix<T>& rm) {
+//template <typename T>
+//Matrix<T>& operator* (const Matrix<T>& rhs) const {
+//
+//}
 
-    if (lm.get_num_rows() != rm.get_num_rows() || lm.get_num_cols() != lm.get_num_cols()) {
-        throw std::runtime_error("Matrices sizes do not match");
+
+
+template <typename T>
+void Matrix<T>::operator+=(const Matrix<T>& rhs){
+    if (this->get_num_rows() != rhs.get_num_rows() || this->get_num_cols() != rhs.get_num_cols()) {
+        throw std::runtime_error("Matrix sizes do not match");
     }
 
-    for (auto row = 0; row < rm.get_num_rows(); row++) {
-        for (auto col = 0; col < rm.get_num_cols(); col++) {
-            lm[row][col] += rm[row][col];
+    for (auto row = 0; row < rhs.get_num_rows(); row++) {
+        for (auto col = 0; col < rhs.get_num_cols(); col++) {
+            (*this)[row][col] += rhs[row][col];
         }
     }
 }
+
+#endif //MATRIX_LIBRARY_DEF

@@ -18,19 +18,33 @@ class Matrix {
 
         // Operators
         std::vector<T>& operator[](uint32_t);
-        Matrix<T>& operator* (const Matrix<T>& rhs) const;
+        std::vector<T> operator[](uint32_t) const;
+        void operator+=(const Matrix<T>& rhs);
+
+//        Matrix<T>& operator* (const Matrix<T>&);
+        Matrix<T>& operator= (const Matrix<T>&);
 
 
         // Getters / Setters
-        uint32_t get_num_rows() {return num_rows;}
-        uint32_t get_num_cols() {return num_cols;}
+        uint32_t get_num_rows() const {return num_rows;}
+        uint32_t get_num_cols() const {return num_cols;}
+
+        // Standard matrix operations
+        void swap_columns(uint32_t, uint32_t);
+        void swap_rows(uint32_t, uint32_t);
+        void add_row(std::vector<T>, uint32_t);
+        void add_column(std::vector<T>, uint32_t);
 
 
 
-//        friend void operator+=(Matrix<T>& lm, Matrix<T>& rm);
+
+
+
+
+
+
 
 };
-
 #include "MatrixLibrary.tpp"
 
 #endif //LINEARLIBRARY_MATRIXLIBRARY_H

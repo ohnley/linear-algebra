@@ -15,6 +15,7 @@ int main(){
 
     Matrix<double> m = Matrix<double>(d);
     m += m;
+
     auto r = m[1];
 
     for (auto val : r){

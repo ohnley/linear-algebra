@@ -3,5 +3,5 @@ project(LinearLibrary)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(execs main.cpp MatrixLibrary.h)
+add_executable(execs main.cpp MatrixLibrary.h MatrixLibrary.tpp)
 
