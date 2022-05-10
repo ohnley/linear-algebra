@@ -10,8 +10,6 @@
  *
  */
 
-
-
 #ifndef LINEARLIBRARY_MATRIXLIBRARY_H
 #define LINEARLIBRARY_MATRIXLIBRARY_H
 
@@ -24,22 +22,27 @@ template<typename T>
 class Matrix {
 
     private:
-        std::vector<std::vector<T>> m_data;
+        std::vector<T> m_data;
         uint32_t num_rows;
         uint32_t num_cols;
+        uint64_t num_items;
 
     public:
+
+        // Constructors
         explicit Matrix(std::vector<std::vector<T>> m);
+        Matrix(T def_val, uint32_t rows, uint32_t cols);
+        Matrix();
 
         // Operators
-        std::vector<T>& operator[](uint32_t);
         std::vector<T> operator[](uint32_t) const;
-        void operator+=(const Matrix<T>& rhs);
-        void operator-=(const Matrix<T>& rhs);
-        void operator*=(const Matrix<T>& rhs);
+        Matrix<T>& operator+=(const Matrix<T>& rhs);
+        Matrix<T>& operator+=(const T& rhs);
+        Matrix<T>& operator-=(const Matrix<T>& rhs);
+        Matrix<T>& operator-=(const T& rhs);
+        Matrix<T>& operator*=(const Matrix<T>& rhs);
+        Matrix<T>& operator*=(const T& rhs);
 
-        void operator*=(const T& rhs);
-        void operator/=(const T& rhs);
 
         friend bool operator==(const Matrix<T>& lhs, const Matrix<T>& rhs);
         friend bool operator!=(const Matrix<T>& lhs, const Matrix<T>& rhs);
@@ -47,12 +50,21 @@ class Matrix {
         // Getters / Setters
         uint32_t get_num_rows() const {return num_rows;}
         uint32_t get_num_cols() const {return num_cols;}
+        uint64_t get_num_items() const {return num_items;}
+
+
+        std::vector<T> get_row(uint32_t);
+        std::vector<T> get_col(uint32_t);
+        T get_item(uint32_t row, uint32_t col);
 
         void swap_columns(uint32_t, uint32_t);
         void swap_rows(uint32_t, uint32_t);
         void add_row(std::vector<T>, uint32_t);
         void add_column(std::vector<T>, uint32_t);
-        
+        void set_item(uint64_t, T);
+        void set_row(std::vector<T>, uint32_t);
+        void set_col(std::vector<T>, uint32_t);
+
 };
 
 #include "MatrixLibrary.tpp"
