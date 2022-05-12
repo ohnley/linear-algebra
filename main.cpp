@@ -6,21 +6,27 @@
 #include "MatrixLibrary.h"
 
 int main(){
-    std::cout << 's';
+
 
     std::vector<std::vector<double>> d = {
-            {1,2,3,4},
-            {5,6,7,8}
+            {1,2,3},
+            {0,1,2}
+    };
+
+    std::vector<std::vector<double>> v = {
+            {1},
+            {2},
+            {3}
     };
 
     Matrix<double> m = Matrix<double>(d);
-    m += m;
+    Matrix<double> A = Matrix<double>(v);
 
-    auto r = m[1];
 
-    for (auto val : r){
-        std::cout << val << ' ';
-    }
+    std::cout << m;
+    m *= A;
+
+    std::cout << m;
 
 
     return 0;

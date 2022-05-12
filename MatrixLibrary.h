@@ -14,29 +14,33 @@
 #define LINEARLIBRARY_MATRIXLIBRARY_H
 
 #include <vector>
+#include <iostream>
 
-//template<typename T> class Matrix;
-//template<typename T> void operator+=(Matrix<T>& lm, Matrix<T>& rm);
+template <typename T> class Matrix;
+template <typename T> bool operator==(const Matrix<T>& lhs, const Matrix<T>& rhs);
+template <typename T> bool operator!=(const Matrix<T>& lhs, const Matrix<T>& rhs);
+template <typename T> std::ostream& operator<<(std::ostream& os, const Matrix<T>& m);
+
 
 template<typename T>
 class Matrix {
 
     private:
         std::vector<T> m_data;
-        uint32_t num_rows;
-        uint32_t num_cols;
-        uint64_t num_items;
+        size_t num_rows;
+        size_t num_cols;
+        size_t num_items;
 
     public:
 
         // Constructors
         explicit Matrix(std::vector<std::vector<T>> m);
-        Matrix(T def_val, uint32_t rows, uint32_t cols);
+        Matrix(T def_val, size_t rows, size_t cols);
 
         // TODO: Implement constructing from external source
 
         // Operators
-        std::vector<T> operator[](uint32_t) const;
+        std::vector<T> operator[](int) const;
         Matrix<T>& operator+=(const Matrix<T>& rhs);
         Matrix<T>& operator+=(const T& rhs);
         Matrix<T>& operator-=(const Matrix<T>& rhs);
@@ -44,39 +48,44 @@ class Matrix {
         Matrix<T>& operator*=(const Matrix<T>& rhs);
         Matrix<T>& operator*=(const T& rhs);
 
-        friend bool operator==(const Matrix<T>& lhs, const Matrix<T>& rhs);
-        friend bool operator!=(const Matrix<T>& lhs, const Matrix<T>& rhs);
+        friend bool operator== <> (const Matrix<T>& lhs, const Matrix<T>& rhs);
+        friend bool operator!= <> (const Matrix<T>& lhs, const Matrix<T>& rhs);
+        friend std::ostream& operator<< <>( std::ostream& os, const Matrix<T>& m) ;
 
         // Getters
-        uint32_t get_num_rows() const {return num_rows;}
-        uint32_t get_num_cols() const {return num_cols;}
-        uint64_t get_num_items() const {return num_items;}
-        std::vector<T> get_row(uint32_t);
-        std::vector<T> get_col(uint32_t);
-        T get_item(uint32_t row, uint32_t col) const;
-        T get_item(uint64_t item_pos) const;
-
+        size_t get_num_rows() const {return num_rows;}
+        size_t get_num_cols() const {return num_cols;}
+        size_t get_num_items() const {return num_items;}
+        std::vector<T> get_row(size_t) const;
+        std::vector<T> get_col(size_t) const;
+        T get_item(size_t row, size_t col) const;
+        T get_item(size_t item_pos) const;
 
         // Setters
-        void swap_columns(uint32_t, uint32_t);
-        void swap_rows(uint32_t, uint32_t);
-        void add_row(std::vector<T>, uint32_t);
-        void add_column(std::vector<T>, uint32_t);
-        void set_item(uint64_t pos, T val);
-        void set_item(uint32_t row, uint32_t col, T val);
-        void set_row(std::vector<T>, uint32_t);
-        void set_col(std::vector<T>, uint32_t);
+        void swap_columns(size_t, size_t);
+        void swap_rows(size_t, size_t);
+        void add_row(std::vector<T>, size_t);
+        void add_column(std::vector<T>, size_t);
+        void set_item(size_t pos, T val);
+        void set_item(size_t row, size_t col, T val);
+        void set_row(std::vector<T>, size_t);
+        void set_col(std::vector<T>, size_t);
 
         Matrix<T> t() const;
         std::vector<T> diagonal() const;
 
 };
 
-
-
 // Math Functions
 template <typename T>
-T dot_product(std::vector<T>, std::vector<T>);
+T dot_product(std::vector<T> l , std::vector<T> r){
+    auto x = 0;
+    for (int i = 0; i < l.size(); i++){
+        x += (l[i] * r[i]);
+    }
+    return x;
+}
+
 
 
 #include "MatrixLibrary.tpp"
