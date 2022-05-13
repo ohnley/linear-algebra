@@ -21,7 +21,6 @@ template <typename T> bool operator==(const Matrix<T>& lhs, const Matrix<T>& rhs
 template <typename T> bool operator!=(const Matrix<T>& lhs, const Matrix<T>& rhs);
 template <typename T> std::ostream& operator<<(std::ostream& os, const Matrix<T>& m);
 
-
 template<typename T>
 class Matrix {
 
@@ -62,29 +61,24 @@ class Matrix {
         T get_item(size_t item_pos) const;
 
         // Setters
-        void swap_columns(size_t, size_t);
-        void swap_rows(size_t, size_t);
-        void add_row(std::vector<T>, size_t);
-        void add_column(std::vector<T>, size_t);
         void set_item(size_t pos, T val);
         void set_item(size_t row, size_t col, T val);
-        void set_row(std::vector<T>, size_t);
-        void set_col(std::vector<T>, size_t);
+        void set_row(size_t, std::vector<T>&);
+        void set_col(size_t, std::vector<T>&);
+
+        void add_row(const std::vector<T>&, size_t);
+        void add_row();
+        void add_col(const std::vector<T>&, size_t);
+        void add_col();
+        void swap_cols(size_t, size_t);
+        void swap_rows(size_t, size_t);
 
         Matrix<T> t() const;
         std::vector<T> diagonal() const;
 
 };
 
-// Math Functions
-template <typename T>
-T dot_product(std::vector<T> l , std::vector<T> r){
-    auto x = 0;
-    for (int i = 0; i < l.size(); i++){
-        x += (l[i] * r[i]);
-    }
-    return x;
-}
+
 
 
 
