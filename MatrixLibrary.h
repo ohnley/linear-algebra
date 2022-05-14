@@ -64,8 +64,8 @@ class Matrix {
         // Setters
         void set_item(size_t pos, T val);
         void set_item(size_t row, size_t col, T val);
-        void set_row(size_t, std::vector<T>&);
-        void set_col(size_t, std::vector<T>&);
+        void set_row(size_t, const std::vector<T>&);
+        void set_col(size_t, const std::vector<T>&);
 
         void add_row(const std::vector<T>&, size_t);
         void add_row();
@@ -79,7 +79,8 @@ class Matrix {
         Matrix<T> get_transpose() const;
         void transpose_in_place();
         std::vector<T> diagonal() const;
-
+        Matrix<T> sub_matrix(size_t, size_t, size_t, size_t);
+        Matrix<T> sub_matrix(size_t, size_t);
 };
 
 

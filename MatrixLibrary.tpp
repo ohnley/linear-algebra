@@ -188,7 +188,7 @@ void Matrix<T>::set_item(size_t row, size_t col, T val) {
 }
 
 template <typename T>
-void Matrix<T>::set_row(size_t row_num, std::vector<T>& new_row){
+void Matrix<T>::set_row(size_t row_num, const std::vector<T>& new_row){
     if (new_row.size() != this->num_cols) throw std::runtime_error("new row size did not match");
     for (int i = 0; i < this->num_cols; i++){
         m_data[i + ((this->num_cols)*row_num)] = new_row[i];
@@ -196,7 +196,7 @@ void Matrix<T>::set_row(size_t row_num, std::vector<T>& new_row){
 }
 
 template <typename T>
-void Matrix<T>::set_col(size_t col_num, std::vector<T>& new_col){
+void Matrix<T>::set_col(size_t col_num, const std::vector<T>& new_col){
     if (new_col.size() != this->num_rows) throw std::runtime_error("new col size did not match");
     for (int i = 0; i < this->num_rows; i++){
         m_data[col_num + ((this->num_rows)*i)] = new_col[i];
@@ -241,6 +241,19 @@ void Matrix<T>::add_col(){
     this->add_col(zeroes, this->num_cols);
 }
 
+template <typename T>
+void Matrix<T>::swap_cols(size_t col_a_index, size_t col_b_index){
+    std::vector<T> col_a = this->get_col(col_a_index);
+    this->set_col(col_a_index, this->get_col(col_b_index));
+    this->set_col(col_b_index, col_a);
+}
+
+template <typename T>
+void Matrix<T>::swap_rows(size_t row_a_index, size_t row_b_index){
+    std::vector<T> row_a = this->get_row(row_a_index);
+    this->set_row(row_a_index, this->get_row(row_b_index));
+    this->set_row(row_b_index, row_a);
+}
 
 template <typename T>
 Matrix<T> Matrix<T>::get_transpose() const {
@@ -273,4 +286,15 @@ std::vector<T> Matrix<T>::diagonal() const{
     }
     return d;
 }
+
+template <typename T>
+Matrix<T> Matrix<T>::sub_matrix(size_t start_row, size_t start_col, size_t end_row, size_t end_col){
+
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::sub_matrix(size_t start_row, size_t start_col){
+    return this->sub_matrix(start_row, start_col, this->num_rows-1, this->num_cols-1);
+}
+
 #endif //MATRIX_LIBRARY_DEF
