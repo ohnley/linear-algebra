@@ -20,6 +20,14 @@ Matrix<T>::Matrix(const std::vector<std::vector<T>> m){
 }
 
 template <typename T>
+Matrix<T>::Matrix(std::vector<T> data, size_t rows, size_t cols) :
+    m_data(data),
+    num_cols(cols),
+    num_rows(rows),
+    num_items(data.size())
+{}
+
+template <typename T>
 Matrix<T>::Matrix(T def_val, size_t rows, size_t cols){
     num_rows = rows;
     num_cols = cols;
@@ -168,8 +176,6 @@ T Matrix<T>::get_item(size_t row, size_t col) const {
 }
 
 // Setters
-
-
 template <typename T>
 void Matrix<T>::set_item(size_t pos, T val) {
     this->m_data[pos] = val;
@@ -235,4 +241,36 @@ void Matrix<T>::add_col(){
     this->add_col(zeroes, this->num_cols);
 }
 
+
+template <typename T>
+Matrix<T> Matrix<T>::get_transpose() const {
+    std::vector<T> new_m_data = {};
+    for (size_t col = 0; col < this->num_cols; col++){
+        for (T& v : this->get_col(col)){
+            new_m_data.emplace_back(v);
+        }
+
+    }
+    Matrix<T> transposed = Matrix<T>(new_m_data, this->get_num_cols(), this->get_num_rows());
+
+    return transposed;
+}
+
+template <typename T>
+void Matrix<T>::transpose_in_place() {
+    Matrix<T> temp = this->get_transpose();
+    this->m_data = temp.m_data;
+    this->num_cols = temp.num_cols;
+    this->num_rows = temp.num_rows;
+}
+
+template <typename T>
+std::vector<T> Matrix<T>::diagonal() const{
+    size_t smallest_dim = std::min(this->num_cols, this->num_rows);
+    std::vector<T> d = {};
+    for (size_t i = 0; i < smallest_dim; i++ ) {
+        d.emplace_back(this->m_data[i * (this->num_cols + 1)]);
+    }
+    return d;
+}
 #endif //MATRIX_LIBRARY_DEF

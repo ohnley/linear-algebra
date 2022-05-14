@@ -43,5 +43,17 @@ int main(){
 
     m.add_col();
     std::cout << m;
+
+    Matrix<double> x  = Matrix<double>(43, 10, 3);
+    Matrix<double> xt  = Matrix<double>(43, 3, 10);
+    std::cout << x;
+    std::cout << "---------------------\n";
+    std::cout << (x*=4);
+    std::cout << "---------------------\n";
+    std::cout << (x.get_transpose());
+    std::cout << "---------------------\n";
+    std::cout << (x *= (x.get_transpose()));
+
+
     return 0;
 }

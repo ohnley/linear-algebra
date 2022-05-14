@@ -34,6 +34,7 @@ class Matrix {
 
         // Constructors
         explicit Matrix(std::vector<std::vector<T>> m);
+        Matrix(std::vector<T>, size_t rows, size_t cols);
         Matrix(T def_val, size_t rows, size_t cols);
 
         // TODO: Implement constructing from external source
@@ -70,10 +71,13 @@ class Matrix {
         void add_row();
         void add_col(const std::vector<T>&, size_t);
         void add_col();
+
         void swap_cols(size_t, size_t);
         void swap_rows(size_t, size_t);
 
-        Matrix<T> t() const;
+        // Matrix specific operations
+        Matrix<T> get_transpose() const;
+        void transpose_in_place();
         std::vector<T> diagonal() const;
 
 };
