@@ -275,6 +275,7 @@ void Matrix<T>::transpose_in_place() {
     this->m_data = temp.m_data;
     this->num_cols = temp.num_cols;
     this->num_rows = temp.num_rows;
+
 }
 
 template <typename T>
@@ -289,6 +290,18 @@ std::vector<T> Matrix<T>::diagonal() const{
 
 template <typename T>
 Matrix<T> Matrix<T>::sub_matrix(size_t start_row, size_t start_col, size_t end_row, size_t end_col){
+    size_t new_rows = end_row - start_row + 1;
+    size_t new_cols = end_col - start_col + 1;
+    std::vector<T> new_m_data = {};
+
+    for (size_t row_index = 0; row_index <= end_row; row_index++){
+        for (size_t col_index = 0; col_index <= end_col; col_index++){
+            new_m_data.emplace_back(this->get_item(row_index, col_index));
+        }
+    }
+
+    Matrix<T> temp_matrix = Matrix<T>(new_m_data, new_rows, new_cols);
+    return temp_matrix;
 
 }
 

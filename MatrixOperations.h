@@ -8,53 +8,45 @@ namespace LinearOperations {
     namespace internal {
 
         template<typename T>
-        void row_echelon_form_helper(Matrix<T>& matrix, size_t position) {
-            if (matrix.get_item(position, position) != 0) {
-
-                // Normalize first row
-                std::vector<T> current_row = matrix.get_row(position);
-                T first_item = current_row[position];
-                for (auto& i : current_row){
-                    i = i/first_item;
-                }
-                matrix.set_row(position, current_row);
-
-                // Normalize lower rows
-                for (size_t row_index = position + 1; row_index < matrix.get_num_rows(); row_index++) {
-                    std::vector<T> lower_row = matrix.get_row(row_index);
-                    T first_item_lower = lower_row[position];
-                    for (size_t i = position; i < matrix.get_num_cols(); i++){
-                        lower_row[i] = lower_row[i] - (first_item_lower * current_row[i]);
-                    }
-                    matrix.set_row(row_index, lower_row);
-                }
-            }
-
-            else if (matrix.get_item(position, position) == 0 && position < matrix.get_num_rows() - 1){
-                std::vector<T> col = matrix.get_col(position);
-                size_t col_index;
-                for (col_index = position; col_index < col.size(); col_index++){
-                    if (col[col_index] > 0){
-                        break;
-                    }
-                }
-                if (col[col_index] == 0) {return;}
-                else if (col[col_index] != 0 ) {
-                    matrix.swap_rows(position, position + 1);
-                    row_echelon_form_helper(matrix, position);
-                    return;
-                }
-            }
-            else {
+        void row_echelon_form_helper(Matrix<T>& matrix, size_t row_index, size_t col_index) {
+            if(row_index == matrix.get_num_rows()  || col_index == matrix.get_num_cols()  ){
                 return;
             }
 
-            if (position >= (matrix.get_num_rows() - 1) || position >= (matrix.get_num_cols() - 1) ) {
-                return;
-            } else {
-                row_echelon_form_helper(matrix, position + 1);
+            // Find the first non-zero entry in the column
+            size_t non_zero_item_row_index;
+            for (non_zero_item_row_index = row_index; non_zero_item_row_index < matrix.get_num_rows(); non_zero_item_row_index++){
+                if (matrix.get_item(non_zero_item_row_index, col_index) != 0){
+                    break;
+                }
+            }
+
+            // If there is a non-zero entry and it is not the first entry in the column, swap those rows
+            if (matrix.get_item(non_zero_item_row_index, col_index) != 0 && non_zero_item_row_index != row_index){
+                matrix.swap_rows(row_index, non_zero_item_row_index);
+            }
+            // Otherwise, run the operation from the next column over and return
+            else if (non_zero_item_row_index == matrix.get_num_rows()) {
+                row_echelon_form_helper(matrix, row_index, col_index +1);
                 return;
             }
+
+            // Now the current item at row_index, col_index is non_zero, so we adjust
+            for (size_t rows = row_index + 1; rows < matrix.get_num_rows(); rows++){
+                auto factor = matrix.get_item(rows, col_index)/matrix.get_item(row_index, col_index);
+                for (size_t cols = col_index; cols <matrix.get_num_cols(); cols++){
+                    matrix.set_item(rows, cols, (matrix.get_item(rows, cols) - (factor * matrix.get_item(row_index, cols))));
+                }
+            }
+
+            // normalize the pivot to 1
+            auto row_factor = matrix.get_item(row_index, col_index);
+            for (size_t cols = col_index; cols < matrix.get_num_cols(); cols++){
+                auto new_value = matrix.get_item(row_index, cols) / row_factor;
+                matrix.set_item(row_index, cols, new_value);
+            }
+            row_echelon_form_helper(matrix, row_index + 1, col_index + 1);
+            return;
         }
     }
 
@@ -68,12 +60,52 @@ namespace LinearOperations {
         return x;
     }
 
-
-
     template <typename T>
     Matrix<T> row_echelon_form(Matrix<T> matrix){
-        internal::row_echelon_form_helper(matrix, 0);
+        internal::row_echelon_form_helper(matrix, 0, 0);
         return matrix;
+    }
+
+    template <typename T>
+    std::vector<std::pair<size_t, size_t>> get_pivot_positions(Matrix<T>& matrix){
+        Matrix<T> ref_matrix = row_echelon_form(matrix);
+        std::vector<std::pair<size_t, size_t>> pivot_pos = {};
+        size_t row_pos = 0;
+        size_t col_pos = 0;
+        for (; row_pos < ref_matrix.get_num_rows()  && col_pos < ref_matrix.get_num_cols();){
+            if(ref_matrix.get_item(row_pos, col_pos) != 0) {
+                pivot_pos.emplace_back(std::pair<size_t, size_t>(row_pos, col_pos));
+                col_pos++; row_pos++;
+                continue;
+            }
+            else {col_pos++;}
+        }
+
+        return pivot_pos;
+    }
+
+    template <typename T>
+    std::vector<T> get_pivot_values(Matrix<T>& matrix){
+        std::vector<T> pivot_vals = {};
+        Matrix<T> ref_matrix = row_echelon_form(matrix);
+        size_t row_pos = 0;
+        size_t col_pos = 0;
+        for (; row_pos < ref_matrix.get_num_rows()  && col_pos < ref_matrix.get_num_cols();){
+            if(ref_matrix.get_item(row_pos, col_pos) != 0) {
+                pivot_vals.emplace_back(ref_matrix.get_item(row_pos, col_pos));
+                col_pos++; row_pos++;
+                continue;
+            }
+            else {col_pos++;}
+        }
+
+        return pivot_vals;
+    }
+
+    template <typename T>
+    std::vector<T> determinant(Matrix<T>& matrix){
+        assert(matrix.get_num_cols() == matrix.get_num_rows());
+
     }
 
 }

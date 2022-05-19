@@ -83,10 +83,6 @@ class Matrix {
         Matrix<T> sub_matrix(size_t, size_t);
 };
 
-
-
-
-
 #include "MatrixLibrary.tpp"
 
 #endif //LINEARLIBRARY_MATRIXLIBRARY_H

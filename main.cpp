@@ -6,11 +6,8 @@ int main(){
 
     std::vector<std::vector<double>> d = {
             {1,2,3,5},
-            {0,1,2,2},
-            {0,0,0,1},
-            {1,1,1,1},
-            {3,2,4,1},
-            {2,4,6,10}
+            {3,1,2,2},
+            {2,0,0,1}
     };
 
     std::vector<std::vector<double>> v = {
@@ -24,6 +21,9 @@ int main(){
 
     std::cout << LinearOperations::row_echelon_form(m);
 
+    for (auto& i : LinearOperations::get_pivot_values(m)){
+        std::cout << i << 'l';
+    }
 
 
     return 0;
