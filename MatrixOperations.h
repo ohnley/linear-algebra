@@ -2,6 +2,7 @@
 #define LINEARLIBRARY_MATRIXOPERATIONS_H
 
 #include "MatrixLibrary.h"
+#include <cmath>
 
 namespace LinearOperations {
 
@@ -100,6 +101,17 @@ namespace LinearOperations {
         }
 
         return pivot_vals;
+    }
+
+    template <typename T>
+    T eucledian_norm(Matrix<T>& m){
+        T total = 0;
+        for (int i = 0; i < m.get_num_rows(); i++){
+            for (T element : m[i]){
+                total += (element*element);
+            }
+        }
+        return std::sqrt(total);
     }
 
     template <typename T>

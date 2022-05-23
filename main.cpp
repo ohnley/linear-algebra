@@ -11,20 +11,21 @@ int main(){
     };
 
     std::vector<std::vector<double>> v = {
-            {1},
-            {2},
-            {3}
+            {3,2,2},
+            {2,3,-2}
     };
 
-    Matrix<double> m = Matrix<double>(d);
+//    Matrix<double> m = Matrix<double>(d);
     Matrix<double> A = Matrix<double>(v);
 
-    std::cout << LinearOperations::row_echelon_form(m);
+//    std::cout << LinearOperations::row_echelon_form(m);
 
-    for (auto& i : LinearOperations::get_pivot_values(m)){
-        std::cout << i << 'l';
-    }
+//    for (auto& i : LinearOperations::get_pivot_values(m)){
+//        std::cout << i << 'l';
+//    }
 
+    Matrix<double> n = (A.get_transpose() *= A);
+    std::cout << (n);
 
     return 0;
 }
