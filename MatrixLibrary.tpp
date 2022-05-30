@@ -59,7 +59,7 @@ Matrix<T>& Matrix<T>::operator+=(const Matrix<T>& rhs){
 
 
 template <typename T>
-Matrix<T>& Matrix<T>::operator+=(const T& rhs){
+Matrix<T>& Matrix<T>::operator+=(const T rhs){
     for (auto& item : this->m_data){
          item += rhs;
     }
@@ -72,14 +72,14 @@ Matrix<T>& Matrix<T>::operator-=(const Matrix<T>& rhs){
         throw std::runtime_error("Matrix sizes do not match");
     }
 
-    for (auto item = 0; item < this->num_cols; item++){
+    for (auto item = 0; item < this->num_items; item++){
         this->set_item(item, this->get_item(item) - rhs.get_item(item));
     }
     return *this;
 }
 
 template <typename T>
-Matrix<T>& Matrix<T>::operator-=(const T& rhs){
+Matrix<T>& Matrix<T>::operator-=(const T rhs){
     for (auto item : this->m_data){
         item -= rhs;
     }
@@ -112,7 +112,7 @@ Matrix<T>& Matrix<T>::operator*=(const Matrix<T>& rhs){
 }
 
 template <typename T>
-Matrix<T>& Matrix<T>::operator*=(const T& rhs) {
+Matrix<T>& Matrix<T>::operator*=(const T rhs) {
     for (auto& item : this->m_data){
         item *= rhs;
     }
@@ -308,6 +308,69 @@ Matrix<T> Matrix<T>::sub_matrix(size_t start_row, size_t start_col, size_t end_r
 template <typename T>
 Matrix<T> Matrix<T>::sub_matrix(size_t start_row, size_t start_col){
     return this->sub_matrix(start_row, start_col, this->num_rows-1, this->num_cols-1);
+}
+
+template <typename T>
+Matrix<T> operator-(const Matrix<T>& lhs, const Matrix<T>& rhs){
+    Matrix<T> l = lhs;
+    l -= rhs;
+    return l;
+}
+
+template <typename T>
+Matrix<T> operator-(const T val, const Matrix<T>& rhs){
+    Matrix<T> r = rhs;
+    r -= val;
+    return r;
+}
+
+template <typename T>
+Matrix<T> operator-(const Matrix<T>& lhs, const T val){
+    Matrix<T> l = lhs;
+    l -= val;
+    return l;
+}
+
+template <typename T>
+Matrix<T> operator*(const Matrix<T>& lhs, const Matrix<T>& rhs){
+    Matrix<T> l = lhs;
+    l *= rhs;
+    return l;
+}
+
+template <typename T>
+Matrix<T> operator*(const T val, const Matrix<T>& rhs){
+    Matrix<T> r = rhs;
+    r *= val;
+    return r;
+}
+
+template <typename T>
+Matrix<T> operator*(const Matrix<T>& lhs, const T val){
+    Matrix<T> l = lhs;
+    l *= val;
+    return l;
+}
+
+template <typename T>
+Matrix<T> operator+(const Matrix<T>& lhs, const Matrix<T>& rhs){
+    Matrix<T> l = lhs;
+    l += rhs;
+    return l;
+}
+
+template <typename T>
+Matrix<T> operator+(const T val, const Matrix<T>& rhs){
+    Matrix<T> r = rhs;
+    r += val;
+    return r;
+}
+
+template <typename T>
+Matrix<T> operator+(const Matrix<T>& lhs, const T val){
+    Matrix<T> l = lhs;
+    l += val;
+    return l;
 }
 
 #endif //MATRIX_LIBRARY_DEF

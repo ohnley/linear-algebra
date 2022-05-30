@@ -36,17 +36,20 @@ class Matrix {
         explicit Matrix(std::vector<std::vector<T>> m);
         Matrix(std::vector<T>, size_t rows, size_t cols);
         Matrix(T def_val, size_t rows, size_t cols);
+//        Matrix(Matrix<T> &&)  noexcept = default;
+        Matrix() = default;
+
 
         // TODO: Implement constructing from external source
 
         // Operators
         std::vector<T> operator[](int) const;
         Matrix<T>& operator+=(const Matrix<T>& rhs);
-        Matrix<T>& operator+=(const T& rhs);
+        Matrix<T>& operator+=(T rhs);
         Matrix<T>& operator-=(const Matrix<T>& rhs);
-        Matrix<T>& operator-=(const T& rhs);
+        Matrix<T>& operator-=(T rhs);
         Matrix<T>& operator*=(const Matrix<T>& rhs);
-        Matrix<T>& operator*=(const T& rhs);
+        Matrix<T>& operator*=(T rhs);
 
         friend bool operator== <> (const Matrix<T>& lhs, const Matrix<T>& rhs);
         friend bool operator!= <> (const Matrix<T>& lhs, const Matrix<T>& rhs);

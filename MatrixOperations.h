@@ -49,12 +49,16 @@ namespace LinearOperations {
             row_echelon_form_helper(matrix, row_index + 1, col_index + 1);
             return;
         }
+
+        template <typename T> int sgn(T val) {
+            return (T(0) < val) - (val < T(0));
+        }
     }
 
     // Math Functions
     template <typename T>
     T dot_product(std::vector<T> l , std::vector<T> r){
-        auto x = 0;
+        T x = 0;
         for (int i = 0; i < l.size(); i++){
             x += (l[i] * r[i]);
         }
@@ -65,6 +69,15 @@ namespace LinearOperations {
     Matrix<T> row_echelon_form(Matrix<T> matrix){
         internal::row_echelon_form_helper(matrix, 0, 0);
         return matrix;
+    }
+
+    template <typename T>
+    Matrix<T> Identity(size_t rows, size_t cols){
+        Matrix<double> i = Matrix<double>(0, rows, cols);
+        for (size_t pos = 0; pos < rows*cols; pos+=(cols+1)){
+            i.set_item(pos, 1);
+        }
+        return i;
     }
 
     template <typename T>
@@ -115,10 +128,44 @@ namespace LinearOperations {
     }
 
     template <typename T>
+    T eucledian_norm(std::vector<T>& v){
+        T total = 0;
+        for (T& item : v){
+            total += (item * item);
+        }
+        return std::sqrt(total);
+    }
+
+    template <typename T>
+    Matrix<T> householder(Matrix<T>& m){
+        Matrix<T> col = Matrix(m.get_col(0), m.get_num_rows(), 1);
+
+        T norm = eucledian_norm(col);
+
+        col.set_item(0,0, col[0][0] + (internal::sgn(col[0][0]) * norm));
+        std::cout << col;
+
+        Matrix<T> col_matrix = col * col.get_transpose();
+        std::cout << col_matrix;
+        T dot_prod = eucledian_norm(col) * eucledian_norm(col);
+
+        Matrix<double> i = Identity<double>(col_matrix.get_num_rows(), col_matrix.get_num_cols());
+
+        std::cout << "------sign->" << internal::sgn(col[0][0]) * norm << "-------------\n";
+
+        i -= ((2/ dot_prod) * (col_matrix));
+
+        return i;
+    }
+
+    template <typename T>
     std::vector<T> determinant(Matrix<T>& matrix){
         assert(matrix.get_num_cols() == matrix.get_num_rows());
 
     }
+
+
+
 
 }
 

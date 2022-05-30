@@ -27,5 +27,8 @@ int main(){
     Matrix<double> n = (A.get_transpose() *= A);
     std::cout << (n);
 
+    Matrix<double> hh = LinearOperations::householder(n);
+
+    std::cout << (hh * n);
     return 0;
 }
